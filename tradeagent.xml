@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<tradeagent>
+  <database>
+    <adapter>Pdo_Pgsql</adapter>
+    <host>192.168.11.199</host>
+    <username></username>
+    <password></password>
+    <dbname></dbname>
+  </database>
+  <connect>
+    <main></main>
+    <sub></sub>
+  </connect>
+  <execution>
+    <waitingcount>40</waitingcount>
+    <waitinginterval>30</waitinginterval>
+  </execution>
+  <sbibackup>
+    <account>
+      <loginuser></loginuser>
+      <loginpass></loginpass>
+      <tradepass></tradepass>
+    </account>
+  </sbibackup>
+</tradeagent>
