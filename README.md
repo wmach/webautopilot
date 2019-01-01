@@ -4,9 +4,9 @@ SBI証券の現物株の信用取引のウェブサイトの入力フォーム�
 - 入力フォームの入力データフローをコンポジットパターンで構造化しました。
 - クラスの継承木をcompositionに見立てて画面遷移を表現しました。
 - visitorパターンのvisitor役クラス内メソッドを再帰的に呼出します。
-
+---
 ## クラスの継承木をコンポジット的に定義する
-```
+```php
 class TPositionEntity        extends LoginEntity{}
 class ShinkiKaiEntryEntity   extends TPositionEntity{}
 class ShinkiUriEntryEntity   extends TPositionEntity{}
@@ -21,9 +21,10 @@ class InsertTOrderEntity     extends TPositionEntity{}
 class UpdateTPositionEntity  extends InsertTOrderEntity{}
 class DetailViewEntity       extends UpdateTPositionEntity{}
 ```
+---
 ## 再帰的なメソッド呼び出し
 ビジネスロジッククラスのメソッドを再帰的に呼出すと、次のような継承木をトラバースする単純なメインループになる。
-```
+```php
 /**
  * orderMainLoop: ビジネスロジック遂行処理
  * @param: $entity: トークン配列（解析済みリクエスト）
@@ -39,8 +40,9 @@ public function orderMainLoop( $entity, $visitor )　{
   return $entity;
 }
 ```
+---
 約定のVisitorクラスのvisitメソッドでデータオブジェクトを解析して、処理を振り分ける。
-```
+```php
 /**
  * visit: 渡された実体から数珠繋ぎになっている実体を返す
  * @param: $paramEntity: 実体(要素element)
@@ -55,9 +57,10 @@ public function visit( $paramEntity ) {
   }
 }
 ```
+---
 ## 継承木を使った再帰的メソッド呼出のクラス図
 ![継承木コンポジット](https://github.com/wmach/webautopilot/blob/master/tree.png)
-
+---
 ## 使い方
 クラウド上のウェブサーバーURLにアクセスして発注を行います。
 ```
@@ -69,6 +72,7 @@ public function visit( $paramEntity ) {
 'price': 価格
 'qty': 数量
 ```
+<br>
 〔 銘柄コード4346を、1,600円で100単位、新規で売りの場合のURL例 〕
 http://トレードエージェントのアクセスURL/TradeAgent?pid=1&gid=1&code=4346&ls=-1&entry_exit=&price=1600&qty=100
 
@@ -92,15 +96,15 @@ http://トレードエージェントのアクセスURL/TradeAgent?pid=1&gid=1&c
 | ZendConstants.php | 定数クラス定義 | Zend F/W ライブラリ用定数値格納クラス |
 | tradeagent.xml | XML設定ファイル |  |
 | Zend/ | ＊ディレクトリ | Zend F/W ライブラリ群格納ディレクトリ |
-
-【ファイル名命名規約】
+　 
+【ファイル名命名規約】  
 定数クラスは、サフィックスに Constants
-【クラス名命名規約】
-抽象クラス： プリフィックスに Abstract
-インタフェース： サフィックスに IF
-その他： デザインパターンを使っている場合はその役柄をサフィックス
+【クラス名命名規約】  
+抽象クラス： プリフィックスに Abstract  
+インタフェース： サフィックスに IF  
+その他： デザインパターンを使っている場合はその役柄をサフィックス  
 
-```tradeagent.xml
+```xml
 <?xml version="1.0" ?>	
 <tradeagent>	
   <database>	……………… データベース設定
