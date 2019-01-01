@@ -1,3 +1,76 @@
+# SBI証券ウェブサイトをスクレイピングして自動発注を行うシステム
+SBI証券の現物株の信用取引のウェブサイトの入力フォームから自動で入力して発注します。
+- 発注時の画面遷移を１つのクラス、Visitorクラスにまとめました。
+- 入力フォームの入力データフローをコンポジットパターンで構造化しました。
+- クラスの継承木をcompositionに見立てて画面遷移を表現しました。
+- visitorパターンのvisitor役クラス内メソッドを再帰的に呼出します。
+
+## クラスの継承木をコンポジット的に定義する
+```
+class TPositionEntity        extends LoginEntity{}
+class ShinkiKaiEntryEntity   extends TPositionEntity{}
+class ShinkiUriEntryEntity   extends TPositionEntity{}
+class HensaiEntryEntity      extends TPositionEntity{}
+class ShinkiKaiConfirmEntity extends ShinkiKaiEntryEntity{}
+class ShinkiUriConfirmEntity extends ShinkiUriEntryEntity{}
+class HensaiConfirmEntity    extends HensaiEntryEntity{}
+class ShinkiKaiExEntity      extends ShinkiKaiConfirmEntity{}
+class ShinkiUriExEntity      extends ShinkiUriConfirmEntity{}
+class HensaiExEntity         extends HensaiConfirmEntity{}
+class InsertTOrderEntity     extends TPositionEntity{}
+class UpdateTPositionEntity  extends InsertTOrderEntity{}
+class DetailViewEntity       extends UpdateTPositionEntity{}
+```
+## 再帰的なメソッド呼び出し
+ビジネスロジッククラスのメソッドを再帰的に呼出すと、次のような継承木をトラバースする単純なメインループになる。
+```
+/**
+ * orderMainLoop: ビジネスロジック遂行処理
+ * @param: $entity: トークン配列（解析済みリクエスト）
+ *         $visitor: visitorパターンのvisitor役
+ */
+public function orderMainLoop( $entity, $visitor )　{
+  // 発注画面が終わり、
+  // T_POSITION と T_ORDER の両方に登録するまでループ
+  while (!($entity instanceof TExecutionEntity)){
+      //再帰的にaccept()関数を呼び出す
+      $entity = $entity->accept( $visitor );
+  }
+  return $entity;
+}
+```
+約定のVisitorクラスのvisitメソッドでデータオブジェクトを解析して、処理を振り分ける。
+```
+/**
+ * visit: 渡された実体から数珠繋ぎになっている実体を返す
+ * @param: $paramEntity: 実体(要素element)
+ * @return: entity: 実体(要素element)
+ */
+public function visit( $paramEntity ) {
+  if ( $paramEntity instanceof DetailViewEntity){
+    return $this->detailView( $paramEntity );}
+  elseif ( $paramEntity instanceof OrderDoneEntity ){
+    $entity = $this->httpLogin( $paramEntity );
+    return new DetailViewEntity($entity->getArray());
+  }
+}
+```
+## 継承木を使った再帰的メソッド呼出のクラス図
+![継承木コンポジット](https://github.com/wmach/webautopilot/blob/master/tree.png)
+
+## 使い方
+クラウド上のウェブサーバーURLにアクセスして発注を行います。
+```
+'pid': ポジションID
+'gid'
+'code': 銘柄コード
+'ls': 売買区分
+'entry_exit': 取引区分
+'price': 価格
+'qty': 数量
+```
+〔 銘柄コード4346を、1,600円で100単位、新規で売りの場合のURL例 〕
+http://トレードエージェントのアクセスURL/TradeAgent?pid=1&gid=1&code=4346&ls=-1&entry_exit=&price=1600&qty=100
 
 | ファイル/ディレクトリ名称 | 内容 |ファイルの説明 |
 |-|-|-|
@@ -19,6 +92,13 @@
 | ZendConstants.php | 定数クラス定義 | Zend F/W ライブラリ用定数値格納クラス |
 | tradeagent.xml | XML設定ファイル |  |
 | Zend/ | ＊ディレクトリ | Zend F/W ライブラリ群格納ディレクトリ |
+
+【ファイル名命名規約】
+定数クラスは、サフィックスに Constants
+【クラス名命名規約】
+抽象クラス： プリフィックスに Abstract
+インタフェース： サフィックスに IF
+その他： デザインパターンを使っている場合はその役柄をサフィックス
 
 ```tradeagent.xml
 <?xml version="1.0" ?>	
