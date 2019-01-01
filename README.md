@@ -58,8 +58,11 @@ public function visit( $paramEntity ) {
 }
 ```
 ---
+　 
 ## 継承木を使った再帰的メソッド呼出のクラス図
 ![継承木コンポジット](https://github.com/wmach/webautopilot/blob/master/tree.png)
+　 
+
 ---
 ## 使い方
 クラウド上のウェブサーバーURLにアクセスして発注を行います。
@@ -98,13 +101,18 @@ http://トレードエージェントのアクセスURL/TradeAgent?pid=1&gid=1&c
 | ZendConstants.php | 定数クラス定義 | Zend F/W ライブラリ用定数値格納クラス |
 | tradeagent.xml | XML設定ファイル |  |
 | Zend/ | ＊ディレクトリ | Zend F/W ライブラリ群格納ディレクトリ |
-　 
+  
+```
 【ファイル名命名規約】  
 定数クラスは、サフィックスに Constants
 【クラス名命名規約】  
 抽象クラス： プリフィックスに Abstract  
 インタフェース： サフィックスに IF  
 その他： デザインパターンを使っている場合はその役柄をサフィックス  
+```
+  
+---
+# 設定ファイル
 
 ```xml
 <?xml version="1.0" ?>	
