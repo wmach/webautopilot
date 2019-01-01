@@ -72,10 +72,12 @@ public function visit( $paramEntity ) {
 'price': 価格
 'qty': 数量
 ```
-<br>
-〔 銘柄コード4346を、1,600円で100単位、新規で売りの場合のURL例 〕
+　 
+【銘柄コード4346を、1,600円で100単位、新規で売りの場合のURL例】
+```
 http://トレードエージェントのアクセスURL/TradeAgent?pid=1&gid=1&code=4346&ls=-1&entry_exit=&price=1600&qty=100
-
+```
+  
 | ファイル/ディレクトリ名称 | 内容 |ファイルの説明 |
 |-|-|-|
 | AbstractVisitor.php | 抽象クラス定義 | Visitorパターンのvisitor役クラスの親クラス |
