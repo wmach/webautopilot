@@ -1,4 +1,4 @@
-# SBI証券ウェブサイトをスクレイピングして自動発注を行うシステム
+# SBI証券ウェブサイトをスクレイピングして自動発注を行うシステム
 SBI証券の現物株の信用取引のウェブサイトの入力フォームから自動で入力して発注します。
 - 発注時の画面遷移を１つのクラス、Visitorクラスにまとめました。
 - 入力フォームの入力データフローをコンポジットパターンで構造化しました。
@@ -60,12 +60,12 @@ public function visit( $paramEntity ) {
 ---
 　 
 ## 継承木を使った再帰的メソッド呼出のクラス図
-![継承木コンポジット](https://github.com/wmach/webautopilot/blob/master/tree.png)
+![継承木コンポジット](https://github.com/wmach/webautopilot/blob/master/tree.png)
 　 
 
 ---
 ## 使い方
-クラウド上のウェブサーバーURLにアクセスして発注を行います。
+クラウド上のウェブサーバーURLにアクセスして発注を行います。
 ```
 'pid': ポジションID
 'gid'
